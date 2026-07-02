@@ -1,0 +1,14 @@
+.venv/
+venv/
+**/__pycache__/
+*.pyc
+*.pyc.*
+.env
+.env.*
+*.sqlite3
+media/
+dist/
+node_modules/
+.next/
+Thumbs.db
+.vscode/
