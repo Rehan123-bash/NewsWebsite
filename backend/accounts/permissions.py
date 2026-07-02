@@ -1,15 +1,49 @@
 from rest_framework.permissions import BasePermission
 
+from .models import User
+
 
 class IsAdminRole(BasePermission):
-    def has_permission(self, request, view):
-        return bool(request.user and request.user.is_authenticated and request.user.role == "admin")
+    """
+    Allows access only to administrators.
+    """
 
-
-class IsEditorOrAdmin(BasePermission):
     def has_permission(self, request, view):
         return bool(
             request.user
             and request.user.is_authenticated
-            and request.user.role in {"admin", "editor"}
+            and request.user.role == User.Role.ADMIN
+        )
+
+
+class IsEditorOrAdmin(BasePermission):
+    """
+    Allows access to editors and administrators.
+    """
+
+    def has_permission(self, request, view):
+        return bool(
+            request.user
+            and request.user.is_authenticated
+            and request.user.role in {
+                User.Role.ADMIN,
+                User.Role.EDITOR,
+            }
+        )
+
+
+class IsJournalistEditorOrAdmin(BasePermission):
+    """
+    Allows access to any authenticated newsroom user.
+    """
+
+    def has_permission(self, request, view):
+        return bool(
+            request.user
+            and request.user.is_authenticated
+            and request.user.role in {
+                User.Role.ADMIN,
+                User.Role.EDITOR,
+                User.Role.JOURNALIST,
+            }
         )
